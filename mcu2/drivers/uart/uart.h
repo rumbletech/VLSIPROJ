@@ -486,6 +486,18 @@ __attribute__((always_inline)) static inline void uart_init_rxie( void ) {
 	
 } 
 
+__attribute__((always_inline)) static inline void uart_init_rxie_txie( void ) {
+	
+	UBRRL = (uint8_t ) CALC_BAUD;
+	UBRRH = CALC_BAUD >> 8 ; 
+	
+	UCSRA = ( U2X_VAL << U2X ) ;
+    UCSRB = ( 1 << RXEN ) | ( 1 << TXEN ) | ( 1 << RXCIE )|( 1<< TXCIE) ;
+    UCSRC = ( 0B11 << UCSZ0 ) ; 
+    
+	
+} 
+
 
   
 #endif 

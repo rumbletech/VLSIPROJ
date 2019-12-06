@@ -56,7 +56,7 @@
 
 //Temperature sensor pin defines
 // can be changed to any free digital pin on your micro 
-#define tsen_pin_num PD2
+#define tsen_pin_num PD4
  
 
 // PIR Motion sensor register defines , can be changed to any port with external interrupts
@@ -67,14 +67,37 @@
 
 //PIR Motion sensor pin define , can be changed to any external interrupt pin number on your micro 
 
-#define pir_pin_num PD3
+#define pir_pin_num PD2
+
+
+// LDR_LED PINS
+
+#define LDR_LED_PIN     PIND
+#define LDR_LED_PORT    PORTD
+#define LDR_LED_DDR     DDRD
+#define LDR_LED_PIN_NUM PD5
+
+//MOTOR DRIVER PINS
+
+#define FAN_PIN        PIND
+#define FAN_PORT       PORTD
+#define FAN_DDR        DDRD
+#define FAN_PIN_NUM    PD3
+
+
+#define MOTOR_PIN        PINB
+#define MOTOR_PORT       PORTB
+#define MOTOR_DDR        DDRB
+#define MOTOR_PIN1_NUM   PB4
+#define MOTOR_PIN2_NUM   PB3 
+
 
 
 //Useful tools
 
 // useful defines 
  
-#define set_bit ( PIN_NUM , PORT ) PORT|=( 1 << PIN_NUM ) 
+#define set_bit( PIN_NUM , PORT ) PORT|=( 1 << PIN_NUM ) 
 #define clear_bit( PIN_NUM , PORT ) PORT &= ~( 1 << PIN_NUM )
 
 
@@ -133,9 +156,49 @@ __attribute__((always_inline)) static inline void ac_init( acint_level acint ) {
 	// Disable digital input buffer 
 	DIDR = (0B11 << AIN0D ) ;
 	// Enable Analog comparator , with int_level
-	ACSR = ( 1 << ACIE ) | ( acint << ACIS0 ) | ( 1 << ACO ) ; 
+	ACSR = ( 1 << ACIE ) | ( acint << ACIS0 )  ; 
 	
 }
+
+
+__attribute__((always_inline)) static inline uint8_t aco_ret ( void ) {
+	
+	return ( ( ACSR & ( 1 << ACO ) ) ? 1 : 0 ) ; 
+}
+
+// SMALL PWM stuff
+
+__attribute__((always_inline)) static inline void timer0_fastpwm_oca_init ( void ){ 
+	
+	// FAST PWM , OCA0
+	TCCR0A = ( 0B11 << WGM00 ) | ( 0B11 << COM0A0 ) ;
+	// 1024 PRESCALER 
+	TCCR0B = ( 0B101 << CS00 ) ;
+	//init as 0 
+	OCR0A = 0 ;  
+}
+
+
+__attribute__((always_inline)) static inline void timer0_oca_update ( uint8_t val ) {
+	
+	OCR0A = val ; 
+	
+}
+
+
+__attribute__((always_inline)) static inline void timer1_init( void ) {
+	
+	TCCR1A = 0 ; // NORMAL OPERATION 
+	OCR1A  = 8 ; // THIS GIVES INTERRUPT EVERY 1 MS 
+	TCNT1 = 0 ; 
+	TIMSK  = ( 1 << OCIE1A ) ; // OCIE1A INTERRUPT 
+	TCCR1B = ( 1 << WGM12 ) | ( 0B101 << CS10 ) ; // CTC , 1024 PRESCALER 
+	
+	
+}
+
+
+
 
 
 

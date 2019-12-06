@@ -17,19 +17,15 @@
 
 // Conversion times in ms  
 
-#define T_ALLOW 5
-#define T_BIT_INIT 6   // LOW TIME BEFORE EACH BIT 
-#define T_BIT 65  
-#define T_VALID 20
-
-#define TCONV_12BIT 750
-#define TCONV_11BIT 375
-#define TCONV_10BIT 188
-#define TCONV_9BIT  94
-
-#define T_RESET_PULSE 480 
-
-
+#define DS18_DELAY_480				(480)
+#define DS18_DELAY_6 				(6)
+#define DS18_DELAY_9 				(9)
+#define DS18_DELAY_64 				(64)
+#define DS18_DELAY_60 				(60)
+#define DS18_DELAY_70 				(70)
+#define DS18_DELAY_10 				(10)
+#define DS18_DELAY_55 				(55)
+#define DS18_DELAY_410				(410) 
 
 
 // Commands 
@@ -53,9 +49,6 @@
 
 
 
-__attribute__((always_inline)) static inline void tsen_pin_out ( void ) {
-	tsen_ddr |= ( 1 << tsen_pin_num  ) ; //OUTPUT 
-}
 
 __attribute__((always_inline)) static inline void tsen_pin_in ( void ) {
 	
@@ -65,16 +58,14 @@ __attribute__((always_inline)) static inline void tsen_pin_in ( void ) {
 	
 
 __attribute__((always_inline)) static inline void tsen_OL ( void ) {
-		
-	clear_bit( tsen_pin_num , tsen_port ) ; 
-		tsen_pin_out() ;
+	
+	tsen_ddr |= ( 1 << tsen_pin_num  ) ;     // PULL THE BUS LOW BY SWITCHING TO OUTPUT 
 
 }
 
 
 __attribute__((always_inline)) static inline void tsen_OH ( void ) {
-	
-					tsen_pin_in();
+					tsen_ddr &=~ ( 1 << tsen_pin_num ) ;    // RELEASE THE BUS BY SWITCHING TO INPUT 
 }
 
 
@@ -92,7 +83,17 @@ typedef struct {
 } sc_pad ; 
 
 
-
+/** Description : reads the scratch pad of the DS18B20 Temperature sensor chip.
+ * @param mem_pad : pointer to a scratch pad structure that will hold the returned registers.
+ * @retval void.
+ * */
 void ds18_read_spad (  sc_pad * mem_pad  );
+
+/** Description : initializes the tsen pin , it takes up to 480 us to initialize.
+ * */
+void ds18_init ( void ) ;
+/** Description : sends a conversion command to the ds18 , conversion time can take up to 750 ms YIKES.
+ * */
+void ds18_tconv ( void );
 
 #endif
