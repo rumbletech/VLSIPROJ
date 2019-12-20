@@ -12,7 +12,7 @@
   //CPU FREQ.
  #define F_CPU 8000000UL
  //APP BAUD_RATE
- #define F_BAUD 38400
+ #define F_BAUD 9600
  
  
  

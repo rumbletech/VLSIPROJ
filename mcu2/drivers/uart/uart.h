@@ -459,7 +459,7 @@
 
 /** Description : This function initializes the UART module in 8 bit data , 1 stop bit , no parity , both rx and tx are enabled.
  * */
- 
+ /*
 __attribute__((always_inline)) static inline void uart_init( void ) {
 	
 	UBRRL = (uint8_t ) CALC_BAUD;
@@ -471,9 +471,11 @@ __attribute__((always_inline)) static inline void uart_init( void ) {
     
 	
 } 
+* */
 
 /** Description : This function initializes the UART module in 8 bit data , 1 stop bit , no parity , both rx and tx enabled, RX interrupt enabled.
  * */
+ 
 __attribute__((always_inline)) static inline void uart_init_rxie( void ) {
 	
 	UBRRL = (uint8_t ) CALC_BAUD;
@@ -503,7 +505,7 @@ __attribute__((always_inline)) static inline void uart_init_rxie_txie( void ) {
 #endif 
 
 #ifdef OVERRIDE_BAUD_CALC
-
+/*
 __attribute__((always_inline)) static inline void uart_init( uint16_t baud_val ) {
 	
 	UBRRL = (uint8_t ) baud_val ;
@@ -515,6 +517,7 @@ __attribute__((always_inline)) static inline void uart_init( uint16_t baud_val )
     
 	
 } 
+* */
 
 #endif 
 
@@ -526,13 +529,13 @@ __attribute__((always_inline)) static inline void uart_init( uint16_t baud_val )
  * NOTE : This function is blocking.
  * */
  
- void uart_sendb( uint8_t my_uint8 ) ; 
+// void uart_sendb( uint8_t my_uint8 ) ; 
  
  /** Description : this function receives a single byte using the usart module .
  * @retval : returns the received byte .
  * NOTE : This function is blocking.
  * */
- uint8_t uart_recb( void );
+ //uint8_t uart_recb( void );
  
  
   /** Description : this function transmits an array of bytes of length 'len' with starting frame character 'startc' and ends with 'endc'.
@@ -546,9 +549,12 @@ __attribute__((always_inline)) static inline void uart_init( uint16_t baud_val )
   void uart_senda( uint8_t* ptr , uint8_t len , uint8_t startc , uint8_t endc ) ;
 
 
-void uart_print( uint8_t* str );
+//void uart_print( uint8_t* str );
 
 
-void uart_print_hex ( uint8_t hex_val );
+//void uart_print_hex ( uint8_t hex_val );
+
+
+ void uartb_transmit ( uint8_t byte );
 
 #endif 
