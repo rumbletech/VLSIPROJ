@@ -212,7 +212,7 @@ switch ( UDR ) {
 	led_cmd = LED_CMD_SEND ; 
 	break ; 
 	
-	case '+' :
+	case '7' :
 	
 	//Increment manually 
 	fan_am = CTRL_MANUAL ;
@@ -220,7 +220,7 @@ switch ( UDR ) {
 	fan_cmd = FAN_CMD_INCREMENT ;
 	break;
 	
-	case '-':
+	case '8':
 	
 	//Decrement manually 
 	fan_am = CTRL_MANUAL ;
@@ -450,6 +450,7 @@ if ( fan_am == CTRL_MANUAL && fan_cmd != NO_CMD  ) {
 	 else if ( fan_state == FAN_SPEED3 ) {
 		 fan_state = FAN_OFF ; 
 	 }	 
+	 
 
 	 
 	 break;
@@ -474,6 +475,8 @@ if ( fan_am == CTRL_MANUAL && fan_cmd != NO_CMD  ) {
 	 
 	 
  }	
+ 
+	UDR = fan_state ;
 	fan_cmd = NO_CMD ; // DONE 
 	
 	

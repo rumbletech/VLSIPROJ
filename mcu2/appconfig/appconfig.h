@@ -79,10 +79,10 @@
 
 //MOTOR DRIVER PINS
 
-#define FAN_PIN        PIND
-#define FAN_PORT       PORTD
-#define FAN_DDR        DDRD
-#define FAN_PIN_NUM    PD3
+#define FAN_PIN        PINB
+#define FAN_PORT       PORTB
+#define FAN_DDR        DDRB
+#define FAN_PIN_NUM    PB2
 
 
 #define MOTOR_PIN        PINB
@@ -171,7 +171,7 @@ __attribute__((always_inline)) static inline uint8_t aco_ret ( void ) {
 __attribute__((always_inline)) static inline void timer0_fastpwm_oca_init ( void ){ 
 	
 	// FAST PWM , OCA0
-	TCCR0A = ( 0B11 << WGM00 ) | ( 0B11 << COM0A0 ) ;
+	TCCR0A = ( 0B11 << WGM00 ) | ( 0B10 << COM0A0 ) ;
 	// 1024 PRESCALER 
 	TCCR0B = ( 0B101 << CS00 ) ;
 	//init as 0 
